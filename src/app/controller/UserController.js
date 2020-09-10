@@ -19,5 +19,11 @@ class UserController {
       provider,
     });
   }
+
+  // Criando metodo de autualização dos dados do usuario
+  async update(req, res) {
+    console.log(req.userId);
+    return res.json('ok');
+  }
 }
 export default new UserController();
