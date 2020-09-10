@@ -28,5 +28,10 @@ class User extends Model {
     });
     return this;
   }
+
+  // Criando metodo de comfirmação de senha cadastrada
+  checkPassword(password) {
+    return bcrypt.compare(password, this.password_hash);
+  }
 }
 export default User;
