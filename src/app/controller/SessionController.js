@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import * as Yup from 'yup';
 import User from '../models/User';
 import authConfig from '../../config/auth';
 
@@ -6,6 +7,16 @@ import authConfig from '../../config/auth';
 // criando classe session
 class SessionController {
   async store(req, res) {
+    // Validação de entrada do usuario
+    const schema = Yup.object().shape({
+      email: Yup.string().email().required(),
+      password: Yup.string().required(),
+    });
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+    // ---------------------------------------------------//
+
     // Pegando email e senha de usuario cadastra para gera um token
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email } });
