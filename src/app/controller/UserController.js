@@ -22,8 +22,28 @@ class UserController {
 
   // Criando metodo de autualização dos dados do usuario
   async update(req, res) {
-    console.log(req.userId);
-    return res.json('ok');
+    const { email, oldPassword } = req.body;
+    const user = await User.findByPk(req.userId);
+    // Verificado se usuario existe para alteração de senha
+    if (email !== user.email) {
+      const userExist = await User.findOne({ where: { email } });
+      if (userExist) {
+        return res.status(400).json({ error: 'User already exists.' });
+      }
+    }
+    // verifica se OldPassword e a mesma cadastra no banco
+    // IF ESTA FAZENDO SE CASO O USUARIO TROCAR A SENHA
+    if (oldPassword && !(await user.checkPassword(oldPassword))) {
+      return res.status(401).json({ error: 'Password does not match.' });
+    }
+    const { id, name, provider } = await user.update(req.body);
+
+    return res.json({
+      id,
+      name,
+      email,
+      provider,
+    });
   }
 }
 export default new UserController();
