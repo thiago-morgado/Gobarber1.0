@@ -31,7 +31,7 @@ class User extends Model {
 
   // relacionamento de tabelas user file
   static associate(models) {
-    this.belongsTo(models.File, { foreignKey: 'avatar_id' });
+    this.belongsTo(models.File, { foreignKey: 'avatar_id', as: 'avatar' });
   }
 
   // Criando metodo de comfirmação de senha cadastrada
