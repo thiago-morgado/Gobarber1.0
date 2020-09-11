@@ -29,6 +29,11 @@ class User extends Model {
     return this;
   }
 
+  // relacionamento de tabelas user file
+  static associate(models) {
+    this.belongsTo(models.File, { foreignKey: 'avatar_id' });
+  }
+
   // Criando metodo de comfirmação de senha cadastrada
   checkPassword(password) {
     return bcrypt.compare(password, this.password_hash);
